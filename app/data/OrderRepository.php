@@ -232,7 +232,6 @@ readonly class OrderRepository implements IOrderRepository
     }
     public function GetById(string $user_id, $id): ?Order
     {
-        // TODO: Implement GetById() method.
         return null;
     }
     public function CreateOrder(Order $order): bool
@@ -282,12 +281,10 @@ readonly class OrderRepository implements IOrderRepository
     }
     public function UpdateOrder(Order $order): bool
     {
-        // TODO: Implement Update() method.
         return false;
     }
     public function DeleteOrder(int $id): bool
     {
-        // TODO: Implement Delete() method.
         return false;
     }
 }

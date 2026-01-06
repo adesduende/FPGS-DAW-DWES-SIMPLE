@@ -9,7 +9,6 @@
             $this->Id=$id;
         }
         static public function Create($id = null): GUID {
-            //TODO: Validate Id format
             if($id!==null) return new GUID($id);
             // Generate 16 bytes (128 bits) of random data or use the data passed into the function.
             $data = random_bytes(16);

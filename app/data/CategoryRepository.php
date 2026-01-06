@@ -12,7 +12,6 @@ class CategoryRepository implements ICategoryRepository
     {
         $this->_context = $context;
     }
-
     public function GetAll(): array
     {
         $conn = $this->_context->getConnection();
@@ -28,7 +27,6 @@ class CategoryRepository implements ICategoryRepository
         }
         return $categories??[];
     }
-
     public function GetById(string $id): ?Category
     {
         $conn = $this->_context->getConnection();
@@ -44,28 +42,20 @@ class CategoryRepository implements ICategoryRepository
         }
         return null;
     }
-
     public function GetByName(string $name): ?Category
     {
-        // TODO: Implement GetByName() method.
         return null;
     }
-
     public function Add(Category $category): bool
     {
-        // TODO: Implement Add() method.
         return false;
     }
-
     public function Update(Category $category): bool
     {
-        // TODO: Implement Update() method.
         return false;
     }
-
     public function Delete(Category $category): bool
     {
-        // TODO: Implement Delete() method.
         return false;
     }
 }

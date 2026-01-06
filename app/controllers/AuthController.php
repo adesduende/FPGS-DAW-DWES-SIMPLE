@@ -111,7 +111,6 @@ class AuthController extends ControllerBase
             $this->data['error'] = 'El email ya existe';
         }
         else{
-            // TODO: Save to database
             $encodedPassword = Hash::Encode($password);
             $newuser = new User(
                 GUID::Create(),

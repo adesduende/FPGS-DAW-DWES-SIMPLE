@@ -44,8 +44,6 @@ class UserController extends ControllerBase
             exit();
         }
 
-        //TODO: Get the items from database
-
         $cartItems = $this->_cartRepository->GetCart($this->data["user_id"]);
         $subtotal = 0;
         foreach ($cartItems->CartProducts as $item) {
@@ -96,7 +94,10 @@ class UserController extends ControllerBase
             exit();
         $cart = $this->_cartRepository->GetCart($this->data["user_id"]);
 
-        $cartProduct = array_find($cart->CartProducts, function ($item) use ($productId) { return $item->Product->Id->Id === $productId;});
+        $cartProduct = array_find($cart->CartProducts, function ($item) use ($productId) { 
+            return $item->Product->Id->Id === $productId;
+        });
+        
         if($cartProduct)
         {
             $cartProduct->Quantity +=1;

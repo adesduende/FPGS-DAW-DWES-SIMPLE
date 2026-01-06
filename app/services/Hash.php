@@ -1,6 +1,5 @@
 <?php
 namespace sportshop\app\services;
-//TODO: We need this service to encode or decode text (Ex: passwords)
 
 readonly class Hash
 {

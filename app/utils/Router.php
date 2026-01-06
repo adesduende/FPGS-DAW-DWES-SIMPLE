@@ -14,11 +14,9 @@ class Router
     }
     public function get(string $path, callable $callback)
     {
-        //TODO: Implement this
     }
     public function post()
     {
-        //TODO: Implement this
     }
 
 }
