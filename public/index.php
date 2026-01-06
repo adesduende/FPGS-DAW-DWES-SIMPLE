@@ -2,7 +2,6 @@
 
 namespace sportshop;
 
-use Memcached;
 use sportshop\app\data\CartRepository;
 use sportshop\app\data\CategoryRepository;
 use sportshop\app\data\DbContext;
@@ -41,7 +40,7 @@ $database = new DbContext(
 
 
 //Create a service collection to use DI
-$service_collection = new ServiceCollection();
+$service_collection = ServiceCollection::GetInstance();
 $service_collection->Add('UserRepository', new UserRepository($database));
 $service_collection->Add('ProductRepository', new ProductRepository($database));
 $service_collection->Add('CategoryRepository', new CategoryRepository($database));
