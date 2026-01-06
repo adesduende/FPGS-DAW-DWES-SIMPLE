@@ -12,13 +12,14 @@ RUN a2enmod rewrite
 RUN echo "display_errors=Off\nerror_reporting=E_ALL\nlog_errors=On\nerror_log=/var/log/php_errors.log\n" > /usr/local/etc/php/php.ini
 
 # Copy application files
-COPY . /var/www/html/
+COPY ./app /var/www/html/app
+COPY ./public /var/www/html/public
 
 # Set working directory
 WORKDIR /var/www/html
 
 # Configure Apache DocumentRoot to point to public directory
-ENV APACHE_DOCUMENT_ROOT /var/www/html/public
+ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
 
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
 RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
