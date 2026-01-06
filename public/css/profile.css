@@ -198,12 +198,6 @@
     font-weight: 600;
     font-size: 0.85rem;
 }
-
-.status-delivered {
-    background-color: #d1fae5;
-    color: #065f46;
-}
-
 .order-body p {
     margin: 0.5rem 0;
     color: #666;
@@ -217,7 +211,6 @@
     border-top: 1px solid #e9ecef;
 }
 
-/* Addresses Grid */
 .addresses-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -308,7 +301,6 @@
     font-size: 0.9rem;
 }
 
-/* Responsive Design */
 @media (max-width: 768px) {
     .profile-header {
         flex-direction: column;
@@ -353,7 +345,6 @@
     }
 }
 
-/* Modal Styles */
 .modal {
     display: none;
     position: fixed;
