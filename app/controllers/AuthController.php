@@ -2,20 +2,28 @@
 
 namespace sportshop\app\controllers;
 
-use sportshop\app\data\CartRepository;
-use sportshop\app\data\UserRepository;
+use sportshop\app\data\interfaces\IUserRepository;
+use sportshop\app\data\interfaces\ICartRepository;
 use sportshop\app\models\Cart;
 use sportshop\app\models\User;
 use sportshop\app\services\Auth;
 use sportshop\app\services\Hash;
 use sportshop\app\utils\GUID;
 
+/**
+ * Auth Controller - This controller manage all the requests related to authentication
+ */
 class AuthController extends ControllerBase
 {
-    protected readonly UserRepository $_userRepository;
-    protected readonly CartRepository $_cartRepository;
+    protected readonly IUserRepository $_userRepository;
+    protected readonly ICartRepository $_cartRepository;
 
-    public function __construct(UserRepository $userRepository, CartRepository $cartRepository)
+    /**
+     * Constructor
+     * @param IUserRepository $userRepository - The user repository
+     * @param ICartRepository $cartRepository - The cart repository
+     */
+    public function __construct(IUserRepository $userRepository, ICartRepository $cartRepository)
     {
         parent::__construct();
         $this->_userRepository = $userRepository;
@@ -23,6 +31,10 @@ class AuthController extends ControllerBase
     }
 
     //[GET]
+    /**
+     * This method manage the request to show the sign in view
+     * @return void
+     */
     public function SignInView(): void
     {
         session_start();
@@ -38,6 +50,10 @@ class AuthController extends ControllerBase
     }
 
     //[GET]
+    /**
+     * This method manage the request to show the sign up view
+     * @return void
+     */
     public function SignUpView(): void
     {
         if (Auth::isLogin()) {
@@ -49,6 +65,11 @@ class AuthController extends ControllerBase
     }
 
     //[POST]
+    /**
+     * This method manage the request to sign in a user
+     * @param array $request - The request data ( username, password )
+     * @return void
+     */
     public function SignIn(array $request): void
     {
         $error = '';
@@ -83,6 +104,11 @@ class AuthController extends ControllerBase
     }
 
     //[POST]
+    /**
+     * This method manage the request to sign up a new user
+     * @param array $request - The request data ( name, surname, email, password, confirm_password, phone, terms )
+     * @return void
+     */
     public function SignUp(array $request): void
     {
         $view = '/app/views/auth/signup.php';
@@ -94,7 +120,6 @@ class AuthController extends ControllerBase
         $password = $request['password'] ?? '';
         $confirm_password = $request['confirm_password'] ?? '';
         $phone = $request['phone'] ?? '';
-        $terms = isset($request['terms']);
 
         // Validation
         if (empty($name) || empty($surname) || empty($email) || empty($password) || empty($phone) || empty($confirm_password)) {
@@ -104,9 +129,7 @@ class AuthController extends ControllerBase
         } elseif (strlen($password) < 8) {
             $this->data['error'] = 'La contraseña debe tener al menos 8 caracteres';
         } elseif ($password !== $confirm_password) {
-            $this->data['error'] = 'Las contraseñas no coinciden';
-        } elseif (!$terms) {
-            $this->data['error'] = 'Debe aceptar los términos y condiciones';
+            $this->data['error'] = 'Las contraseñas no coinciden';        
         } elseif ($this->_userRepository->GetByEmail($email)!==null) {
             $this->data['error'] = 'El email ya existe';
         }
@@ -143,6 +166,10 @@ class AuthController extends ControllerBase
     }
 
     //[GET]
+    /**
+     * This method manage the request to sign out a user
+     * @return void
+     */
     public function SignOut(): void
     {
         session_start();

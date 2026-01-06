@@ -2,7 +2,7 @@
 
 namespace sportshop\app\data;
 
-use DateTime;
+use sportshop\app\data\interfaces\ICartRepository;
 use sportshop\app\models\Cart;
 use sportshop\app\models\CartProduct;
 use sportshop\app\models\Category;

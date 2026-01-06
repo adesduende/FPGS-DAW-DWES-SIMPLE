@@ -1,20 +1,33 @@
 <?php
 namespace sportshop\app\controllers;
 
-use sportshop\app\data\CategoryRepository;
-use sportshop\app\data\ProductRepository;
+use sportshop\app\data\interfaces\IProductRepository;
+use sportshop\app\data\interfaces\ICategoryRepository;
 
+/**
+ * Product Controller - This controller manage al about the products
+ */
 class ProductsController extends ControllerBase
 {
-    private readonly ProductRepository $_productRepository;
-    private readonly CategoryRepository $_categoryRepository;
-    public function __construct(ProductRepository $productRepository, CategoryRepository $categoryRepository)
+    private readonly IProductRepository $_productRepository;
+    private readonly ICategoryRepository $_categoryRepository;
+    /**
+     * ProductsController constructor.
+     * @param IProductRepository $productRepository - The product repository
+     * @param ICategoryRepository $categoryRepository - The category repository
+     */
+    public function __construct(IProductRepository $productRepository, ICategoryRepository $categoryRepository)
     {
         parent::__construct();
         $this->_productRepository=$productRepository;
         $this->_categoryRepository=$categoryRepository;
     }
     //[GET]
+    /**
+     * This methos show the products paginated
+     * @param array $request - The request data (category, sort, search, page, items)
+     * @return void
+     */
     public function Index(array $request) : void {
 
         $request['onlyActive'] = true;

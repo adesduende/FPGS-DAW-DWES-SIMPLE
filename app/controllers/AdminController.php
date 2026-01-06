@@ -1,27 +1,39 @@
 <?php
 namespace sportshop\app\controllers;
 
-use sportshop\app\data\UserRepository;
-use sportshop\app\data\ProductRepository;
-use sportshop\app\data\OrderRepository;
-use sportshop\app\data\CartRepository;
-use sportshop\app\data\CategoryRepository;
+use sportshop\app\data\interfaces\IUserRepository;
+use sportshop\app\data\interfaces\IProductRepository;
+use sportshop\app\data\interfaces\IOrderRepository;
+use sportshop\app\data\interfaces\ICartRepository;
+use sportshop\app\data\interfaces\ICategoryRepository;
 use sportshop\app\models\Product;
 use sportshop\app\utils\GUID;
-
+/**
+ * Admin controller
+ * This controller manage all the request refering over the
+ * admin action
+ */
 class AdminController extends ControllerBase
 {
-    private readonly UserRepository $_userRepository;
-    private readonly ProductRepository $_productRepository;
-    private readonly OrderRepository $_orderRepository;
-    private readonly CartRepository $_cartRepository;
-    private readonly CategoryRepository $_categoryRepository;
+    private readonly IUserRepository $_userRepository;
+    private readonly IProductRepository $_productRepository;
+    private readonly IOrderRepository $_orderRepository;
+    private readonly ICartRepository $_cartRepository;
+    private readonly ICategoryRepository $_categoryRepository;
+    /**
+     * Constructor of the controller
+     * @param IUserRepository $userRepository - The user repository
+     * @param IProductRepository $productRepository - The product repository
+     * @param IOrderRepository $orderRepository - The order repository
+     * @param ICartRepository $cartRepository - The cart repository
+     * @param ICategoryRepository $categoryRepository - The category repository
+     */
     public function __construct(
-        UserRepository $userRepository,
-        ProductRepository $productRepository,
-        OrderRepository $orderRepository,
-        CartRepository $cartRepository,
-        CategoryRepository $categoryRepository)
+        IUserRepository $userRepository,
+        IProductRepository $productRepository,
+        IOrderRepository $orderRepository,
+        ICartRepository $cartRepository,
+        ICategoryRepository $categoryRepository)
     {
         parent::__construct();
         $this->_userRepository = $userRepository;
@@ -31,6 +43,12 @@ class AdminController extends ControllerBase
         $this->_categoryRepository = $categoryRepository;
     }
     //[GET]
+    /**
+     * User DashBoard manage the request to show the information about
+     * the user
+     * @param array $request - The request data ( page )
+     * @return void
+     */
     public function UsersDashboard(array $request): void
     {
         $userPerPage = 10;
@@ -53,6 +71,11 @@ class AdminController extends ControllerBase
         include LAYOUT;
     }
     //[POST]
+    /**
+     * This methos manage the request to activate or deactivate an user
+     * @param array $request - The request data ( userId, isActive )
+     * @return void
+     */
     public function ActivateUser(array $request): void
     {
         if (!$this->data['isLogin'] || !$this->data['isAdmin']) {
@@ -74,6 +97,11 @@ class AdminController extends ControllerBase
         exit();
     }
     //[POST]
+    /**
+     * This methog manage the request to change the role of an user
+     * @param array $request - The request data ( userId, role )
+     * @return void
+     */
     public function ChangeUserRole(array $request): void
     {
         if (!$this->data['isLogin'] || !$this->data['isAdmin']) {
@@ -85,16 +113,19 @@ class AdminController extends ControllerBase
         $userId = isset($request['userId']) ? ($request['userId']==''?null:$request['userId']) : null;
 
         if($userRole === null || $userId === null) {
-            header('Content-Type: application/json');
-            echo json_encode(['success' => false, 'message' => 'Invalid parameters']);
-            exit();
+            $this->ResponseJson(false, 'Invalid parameters');
         }
         $result = $this->_userRepository->ChangeUserRole($userId, $userRole);
 
         $this->ResponseJson($result, 'Error al actualizar el rol del usuario');
-        exit();
+
     }
     //[GET]
+    /**
+     * This method manage the request to show the products dashboard
+     * @param array $request - The request data ( page )
+     * @return void
+     */
     public function ProductsDashboard(array $request): void
     {
         if (!$this->data['isLogin'] || !$this->data['isAdmin']) {
@@ -124,6 +155,11 @@ class AdminController extends ControllerBase
         include LAYOUT;
     }
     //[POST]
+    /**
+     * This method manage the request to add a new product
+     * @param array $request - The request data ( name, description, categoryId, price, stock, discount, image )
+     * @return void
+     */
     public function AddProduct(array $request): void
     {
         if (!$this->data['isLogin'] || !$this->data['isAdmin']) {
@@ -164,6 +200,11 @@ class AdminController extends ControllerBase
         $this->ResponseJson($response, 'Error al agregar el producto');
     }
     //[POST]
+    /**
+     * This method manage the request to edit a product
+     * @param array $request - The request data ( id, name, description, categoryId, price, stock, discount, image )
+     * @return void
+     */
     public function EditProduct(array $request): void
     {
         if (!$this->data['isLogin'] || !$this->data['isAdmin']) {
@@ -199,6 +240,11 @@ class AdminController extends ControllerBase
         exit();
     }
     //[POST]
+    /**
+     * This method manage the request to delete or activate a product
+     * @param array $request - The request data ( id, activate )
+     * @return void
+     */
     public function DeleteProduct(array $request): void
     {
         if (!$this->data['isLogin'] || !$this->data['isAdmin']) {
@@ -217,6 +263,11 @@ class AdminController extends ControllerBase
         $this->ResponseJson($response, 'Error al eliminar el producto');
     }
     //[GET]
+    /**
+     * This method manage the request to show the orders dashboard
+     * @param array $request - The request data ( page, search, status )
+     * @return void
+     */
     public function OrdersDashboard(array $request): void
     {
         if (!$this->data['isLogin'] || !$this->data['isAdmin']) {
@@ -254,6 +305,11 @@ class AdminController extends ControllerBase
         include LAYOUT;
     }
     //[POST]
+    /**
+     * This method manage the request to update the status of an order
+     * @param array $request - The request data ( orderId, status )
+     * @return void
+     */
     public function UpdateOrderStatus(array $request): void
     {
         if (!$this->data['isLogin'] || !$this->data['isAdmin']) {

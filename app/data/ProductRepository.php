@@ -1,6 +1,7 @@
 <?php
     namespace sportshop\app\data;
 
+    use sportshop\app\data\interfaces\IProductRepository;
     use sportshop\app\models\Category;
     use sportshop\app\models\Product;
     use sportshop\app\utils\GUID;
@@ -142,7 +143,7 @@
         function GetByQueryPaginated(int $unitsPerPage = 20, int $page=1, array $query): ?array
         {
             //Filter
-            $outstanding = ($query['outstanding']===true)?'AND product.badge IS NOT NULL AND product.badge <> "" OR product.discount >= 1 ':'';
+            $outstanding = ($query['outstanding']===true)?'AND (product.badge IS NOT NULL AND product.badge <> "" OR product.discount >= 1) ':'';
             $category_name=($query['category']==='Todos')?'%':$query['category']??'%';
             $product_name=($query['search']==='')?'%':'%'.$query['search'].'%'??'%';
             $onlyActive = ($query['onlyActive']===true)?'AND product.is_active = 1 ':'';

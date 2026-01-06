@@ -2,6 +2,7 @@
 
 namespace sportshop\app\data;
 
+use sportshop\app\data\interfaces\ICategoryRepository;
 use sportshop\app\models\Category;
 use sportshop\app\utils\GUID;
 

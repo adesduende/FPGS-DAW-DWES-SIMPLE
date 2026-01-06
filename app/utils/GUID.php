@@ -1,6 +1,9 @@
 <?php
 
     namespace sportshop\app\utils;
+    /**
+     * This class represents a GUID (Globally Unique Identifier).
+     */
     class GUID {
 
         public string $Id;
@@ -8,6 +11,11 @@
         private function __construct(?string $id) {
             $this->Id=$id;
         }
+        /**
+         * Creates a new GUID.
+         * @param string|null $id - Optional. If provided, the GUID will be created with this ID.
+         * @return GUID - The newly created GUID.
+         */
         static public function Create($id = null): GUID {
             if($id!==null) return new GUID($id);
             // Generate 16 bytes (128 bits) of random data or use the data passed into the function.

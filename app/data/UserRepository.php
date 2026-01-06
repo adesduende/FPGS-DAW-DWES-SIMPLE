@@ -1,6 +1,7 @@
 <?php
 namespace sportshop\app\data;
 
+use sportshop\app\data\interfaces\IUserRepository;
 use sportshop\app\models\Cart;
 use sportshop\app\models\User;
 use sportshop\app\utils\GUID;

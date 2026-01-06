@@ -3,10 +3,15 @@ namespace sportshop\app\controllers;
 
 use sportshop\app\services\Auth;
 
+/**
+ * Controller Base - Base class for all controllers
+ */
 abstract class ControllerBase
 {
     public array $data;
-
+    /**
+     * Constructor - Initializes session and common data
+     */
     protected function __construct()
     {
         session_start();
@@ -17,7 +22,12 @@ abstract class ControllerBase
         $this->data['isLogin'] = Auth::isLogin();
         $this->data['isAdmin'] = Auth::isAdmin();
     }
-
+    /**
+     * Sends a JSON response
+     * @param bool $result - The result of the operation
+     * @param string $error - The message of error
+     * @return void
+     */
     protected function ResponseJson($result, $error=''): void
     {
         header('Content-Type: application/json');

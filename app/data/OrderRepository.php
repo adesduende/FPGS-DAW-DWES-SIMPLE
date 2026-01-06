@@ -4,6 +4,7 @@ namespace sportshop\app\data;
 
 use DateTime;
 use PDO;
+use sportshop\app\data\interfaces\IOrderRepository;
 use sportshop\app\models\Category;
 use sportshop\app\models\Order;
 use sportshop\app\models\Product;
@@ -283,7 +284,7 @@ readonly class OrderRepository implements IOrderRepository
     {
         return false;
     }
-    public function DeleteOrder(int $id): bool
+    public function DeleteOrder(string $id): bool
     {
         return false;
     }

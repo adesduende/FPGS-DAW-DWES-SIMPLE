@@ -2,10 +2,18 @@
 
 namespace sportshop\app\utils;
 
+/**
+ * Class DotEnv
+ * Load environment variables from a .env file.
+ */
 class DotEnv
 {
     protected string $path;
 
+    /**
+     * DotEnv constructor.
+     * @param string $path The directory path where the .env file is located.
+     */
     public function __construct(string $path)
     {
         if (!file_exists($path)) {
@@ -13,13 +21,15 @@ class DotEnv
         }
         $this->path = $path . "\.env";
     }
-
+    /**
+     * Load the environment variables from the .env file.
+     */
     public function load(): void
     {
         $lines = file($this->path, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
         
         foreach ($lines as $line) {
-            // Skip comments if is available
+            // saltamos los comentarios
             if (str_starts_with(trim($line), '#')) {
                 continue;
             }
@@ -29,10 +39,9 @@ class DotEnv
                 $name = trim($name);
                 $value = trim($value);
 
-                // Remove quotes from value for assignament
                 $value = $this->removeQuotes($value);
 
-                // Set the variables
+
                 if (!array_key_exists($name, $_ENV)) {
                     putenv("{$name}={$value}");
                     $_ENV[$name] = $value;
@@ -41,7 +50,9 @@ class DotEnv
             }
         }
     }
-
+    /**
+     * Remove quotes from a string value.
+     */
     protected function removeQuotes(string $value): string
     {
         if ((str_starts_with($value, '"') && str_ends_with($value, '"')) ||

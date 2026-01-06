@@ -3,31 +3,36 @@
 namespace sportshop\app\controllers;
 
 use DateTime;
-use http\Env\Response;
-use http\Header;
-use http\Message\Body;
-use sportshop\app\data\CartRepository;
-use sportshop\app\data\DbContext;
-use sportshop\app\data\OrderRepository;
-use sportshop\app\data\ProductRepository;
-use sportshop\app\data\UserRepository;
+use sportshop\app\data\interfaces\IUserRepository;
+use sportshop\app\data\interfaces\IProductRepository;
+use sportshop\app\data\interfaces\IOrderRepository;
+use sportshop\app\data\interfaces\ICartRepository;
 use sportshop\app\models\CartProduct;
 use sportshop\app\models\Order;
 use sportshop\app\services\Hash;
 use sportshop\app\utils\GUID;
-
+/**
+ * User Controller - This controller manage all about the user actions
+ */
 class UserController extends ControllerBase
 {
 
-    private readonly UserRepository $_userRepository;
-    private readonly CartRepository $_cartRepository;
-    private readonly OrderRepository $_orderRepository;
-    private readonly ProductRepository $_productRepository;
+    private readonly IUserRepository $_userRepository;
+    private readonly ICartRepository $_cartRepository;
+    private readonly IOrderRepository $_orderRepository;
+    private readonly IProductRepository $_productRepository;
+    /**
+     * UserController constructor
+     * @param IUserRepository $userRepository - The user repository
+     * @param ICartRepository $cartRepository - The cart repository
+     * @param IOrderRepository $orderRepository - The order repository
+     * @param IProductRepository $productRepository - The product repository
+     */
     public function __construct(
-        UserRepository $userRepository,
-        CartRepository $cartRepository,
-        OrderRepository $orderRepository,
-        ProductRepository $productRepository
+        IUserRepository $userRepository,
+        ICartRepository $cartRepository,
+        IOrderRepository $orderRepository,
+        IProductRepository $productRepository
     )
     {
         parent::__construct();
@@ -37,6 +42,10 @@ class UserController extends ControllerBase
         $this->_productRepository = $productRepository;
     }
     //[GET]
+    /**
+     * This method show the user cart
+     * @return void
+     */
     public function Cart(): void
     {
         if (!$this->data['isLogin']) {
@@ -62,6 +71,10 @@ class UserController extends ControllerBase
         include LAYOUT;
     }
     //[GET]
+    /**
+     * This method return the cart count in json
+     * @return void
+     */
     public function CartCount(): void
     {
         if (!$this->data['isLogin']) {
@@ -78,6 +91,11 @@ class UserController extends ControllerBase
 
     }
     //[POST]
+    /**
+     * This method add a product to the user cart
+     * @param array $request - The request data (product_id)
+     * @return void
+     */
     public function CartAdd($request): void
     {
         if (!$this->data['isLogin']) {
@@ -117,6 +135,11 @@ class UserController extends ControllerBase
         exit();
     }
     //[POST]
+    /**
+     * This method update the quantity of a product in the cart
+     * @param array $request - The request data (pid, qty)
+     * @return void
+     */
     public function CartUpdate($request): void
     {
         if (!$this->data['isLogin']) {
@@ -143,6 +166,11 @@ class UserController extends ControllerBase
         echo '{"updated":' . $response . '}';
     }
     //[POST]
+    /**
+     * This method delete a product from the cart
+     * @param array $request - The request data (pid)
+     * @return void
+     */
     public function CartDelete($request): void
     {
         if (!$this->data['isLogin']) {
@@ -164,6 +192,10 @@ class UserController extends ControllerBase
         echo '{"updated":1}';
     }
     //[GET]
+    /**
+     * This method process the checkout of the user cart
+     * @return void
+     */
     public function Checkout(): void
     {
         if (!$this->data['isLogin']) {
@@ -198,6 +230,10 @@ class UserController extends ControllerBase
         exit();
     }
     //[GET]
+    /**
+     * This method show the user profile
+     * @return void
+     */
     public function Profile(): void
     {
         if (!$this->data['isLogin']) {
@@ -212,8 +248,12 @@ class UserController extends ControllerBase
         $view = '/app/views/user/profile.php';
         include LAYOUT;
     }
-
     //[POST]
+    /**
+     * This method change the user password
+     * @param array $request - The request data (oldPassword, newPassword)
+     * @return void
+     */
     public function ChangePassword($request): void
     {
         $oldPassword = $request['oldPassword'] ?? '';
