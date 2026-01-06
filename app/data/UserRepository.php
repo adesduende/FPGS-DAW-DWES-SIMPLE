@@ -16,10 +16,7 @@ readonly class UserRepository implements IUserRepository
     }
     function ActivateUser(string $userId, bool $isActive): bool
     {
-        $stmt = $this->_context->getConnection()->prepare("
-                UPDATE user 
-                SET is_active = :is_active  
-                WHERE user.id = :user_id");
+        $stmt = $this->_context->getConnection()->prepare("UPDATE user SET is_active = :is_active WHERE user.id = :user_id");
         $stmt->bindParam(':user_id', $userId);
         $stmt->bindParam(':is_active', $isActive, \PDO::PARAM_BOOL);
         $stmt->execute();
@@ -29,10 +26,7 @@ readonly class UserRepository implements IUserRepository
     }
     function ChangeUserRole(string $userId, string $role): bool
     {
-        $stmt = $this->_context->getConnection()->prepare("
-                UPDATE user 
-                SET role = :role  
-                WHERE user.id = :user_id");
+        $stmt = $this->_context->getConnection()->prepare("UPDATE user SET role = :role WHERE user.id = :user_id");
         $stmt->bindParam(':user_id', $userId);
         $stmt->bindParam(':role', $role);
         $stmt->execute();
@@ -177,10 +171,7 @@ readonly class UserRepository implements IUserRepository
     }
     function UpdateUser(User $user): bool
     {
-        $stmt = $this->_context->getConnection()->prepare("
-                UPDATE user 
-                SET name = :name, surname = :surname, email = :email, phone_number = :phone_number, hashed_password = :hashed_password, role = :role, is_active = :is_active  
-                WHERE user.id = :user_id");
+        $stmt = $this->_context->getConnection()->prepare("UPDATE user SET name = :name, surname = :surname, email = :email, phone_number = :phone_number, hashed_password = :hashed_password, role = :role, is_active = :is_active WHERE user.id = :user_id");
         $stmt->bindParam(':user_id', $user->Id->Id);
         $stmt->bindParam(':name', $user->Name);
         $stmt->bindParam(':surname', $user->Surname);
@@ -196,10 +187,7 @@ readonly class UserRepository implements IUserRepository
     }    
     function UpdatePassword(string $userId, string $hashedPassword): bool
     {
-        $stmt = $this->_context->getConnection()->prepare("
-                UPDATE user 
-                SET hashed_password = :hashed_password  
-                WHERE user.id = :user_id");
+        $stmt = $this->_context->getConnection()->prepare("UPDATE user SET hashed_password = :hashed_password WHERE user.id = :user_id");
         $stmt->bindParam(':user_id', $userId);
         $stmt->bindParam(':hashed_password', $hashedPassword);
         $stmt->execute();

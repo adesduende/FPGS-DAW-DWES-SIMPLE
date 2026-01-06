@@ -67,7 +67,7 @@ class UserController extends ControllerBase
         $this->data['cart_items_tax'] = $tax;
         $this->data['cart_items_total'] = $total;
 
-        $view = '/app/views/user/cart.php';
+        $view = '/app/views/User/Cart.php';
         include LAYOUT;
     }
     //[GET]
@@ -104,7 +104,6 @@ class UserController extends ControllerBase
         $productId = $request['product_id']??null;
         if($productId==null)
         {
-            //Return false and the error
             exit();
         }
         $productToAdd = $this->_productRepository->GetById($productId);
@@ -245,7 +244,7 @@ class UserController extends ControllerBase
         $user = $this->_userRepository->GetById($this->data["user_id"]);
         $this->data['orders'] = $orders;
         $this->data['user'] = $user;
-        $view = '/app/views/user/profile.php';
+        $view = '/app/views/User/Profile.php';
         include LAYOUT;
     }
     //[POST]

@@ -16,8 +16,14 @@ class Router
      */
     static public function map(string $method, string $path, callable $callback)
     {
-        if($method !== $_SERVER['REQUEST_METHOD']&& $method !== "ALL") return;
-        if($path !== ($_SERVER['PATH_INFO']??'/')&& $path !== "default") return;
+        if(!isset($_SERVER['REQUEST_METHOD'])) 
+            exit();
+
+        // Get the path from either PATH_INFO or REQUEST_URI
+        $requestPath = $_SERVER['PATH_INFO'] ?? parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH);
+        
+        if($method !== $_SERVER['REQUEST_METHOD'] && $method !== "ALL") return;
+        if($path !== $requestPath && $path !== "default") return;
         
         $callback($_REQUEST);
         exit();

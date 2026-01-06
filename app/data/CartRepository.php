@@ -53,14 +53,7 @@ readonly class CartRepository implements ICartRepository {
         $cartId = $stmt->fetch(\PDO::FETCH_ASSOC);
 
         //Get all the data
-        $stmt = $conn->prepare("
-            SELECT c.id as cart_id ,cp.quantity,p.*,ca.name as category_name, ca.description as category_description 
-            FROM cart c
-            INNER JOIN cart_products cp ON cp.cart_id = c.id
-            INNER JOIN product p ON p.id = cp.product_id
-            INNER JOIN category ca ON p.category_id = ca.id            
-            WHERE c.user_id = :user_id
-            ");
+        $stmt = $conn->prepare("SELECT c.id as cart_id, cp.quantity, p.*, ca.name as category_name, ca.description as category_description FROM cart c INNER JOIN cart_products cp ON cp.cart_id = c.id INNER JOIN product p ON p.id = cp.product_id INNER JOIN category ca ON p.category_id = ca.id WHERE c.user_id = :user_id");
         $stmt->bindParam('user_id',$userId, \PDO::PARAM_STR);
         $stmt->execute();
         $products = [];

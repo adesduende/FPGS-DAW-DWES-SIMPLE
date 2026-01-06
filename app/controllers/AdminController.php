@@ -67,7 +67,7 @@ class AdminController extends ControllerBase
         $this->data['currentPage'] = $currentPage;
         $this->data['totalPages'] = ceil($usersData["total"] / $userPerPage);
 
-        $view = '/app/views/admin/users.php';
+        $view = '/app/views/Admin/Users.php';
         include LAYOUT;
     }
     //[POST]
@@ -151,7 +151,7 @@ class AdminController extends ControllerBase
         $this->data['categoriesCount'] = count($categories);
         $this->data['categories'] = $categories;
         
-        $view = '/app/views/admin/products.php';
+        $view = '/app/views/Admin/Products.php';
         include LAYOUT;
     }
     //[POST]
@@ -301,7 +301,7 @@ class AdminController extends ControllerBase
         $this->data['currentPage'] = $ordersData['currentPage'];
         $this->data['totalPages'] = ceil($ordersData['totalOrders']/ $ordersData['pageSize']);
         
-        $view = '/app/views/admin/orders.php';
+        $view = '/app/views/Admin/Orders.php';
         include LAYOUT;
     }
     //[POST]

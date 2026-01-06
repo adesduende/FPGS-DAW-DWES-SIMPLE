@@ -75,13 +75,13 @@
                                 </td>
                                 <td class="actions">
                                     <button class="btn-edit action-btn" 
-                                        onclick="openEditModal('<?= $user->Id->Id ?>', '<?= htmlspecialchars($user->Name) ?>', '<?= htmlspecialchars($user->Surname) ?>', '<?= $user->Role ?>')">✏️</button>
+                                        onclick="openEditModal('<?= htmlspecialchars($user->Id->Id) ?>', '<?= htmlspecialchars($user->Name) ?>', '<?= htmlspecialchars($user->Surname) ?>', '<?= htmlspecialchars($user->Role) ?>')">✏️</button>
                                     <?php if ($user->IsActive): ?>
                                         <button class="action-btn-deactivate action-btn"
-                                            onclick="UpdateUser(<?php echo '0'; ?>, '<?php echo $user->Id->Id; ?>')">🚫</button>
+                                            onclick="UpdateUser(<?php echo '0'; ?>, '<?php echo htmlspecialchars($user->Id->Id); ?>')">🚫</button>
                                     <?php else: ?>
                                         <span class="action-btn-activate action-btn"
-                                            onclick="UpdateUser(<?php echo '1'; ?>, '<?php echo $user->Id->Id; ?>')">✅</span>
+                                            onclick="UpdateUser(<?php echo '1'; ?>, '<?php echo htmlspecialchars($user->Id->Id); ?>')">✅</span>
                                     <?php endif; ?>
                                 </td>
                             </tr>
@@ -95,7 +95,7 @@
                     onclick="NavigateToPage(<?php echo $this->data['currentPage'] - 1 > 0 ? $this->data['currentPage'] - 1 : 1; ?>)">«</button>
                 <?php for ($i = 1; $i <= $this->data['totalPages']; $i++): ?>
                     <button class="page-btn <?php echo $i === $this->data['currentPage'] ? 'active' : '' ?>"
-                        onclick="NavigateToPage(<?php echo $i; ?>)"><?= $i ?></button>
+                        onclick="NavigateToPage(<?php echo htmlspecialchars($i); ?>)"><?= htmlspecialchars($i) ?></button>
                 <?php endfor; ?>
                 <button class="page-btn" <?php echo $this->data['currentPage'] >= $this->data['totalPages'] ? 'disabled' : ''; ?>
                     onclick="NavigateToPage(<?php echo $this->data['currentPage'] + 1 < $this->data['totalPages'] ? $this->data['currentPage'] + 1 : $this->data['totalPages']; ?>)">»</button>

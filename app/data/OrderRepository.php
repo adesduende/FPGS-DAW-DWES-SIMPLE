@@ -44,11 +44,7 @@ readonly class OrderRepository implements IOrderRepository
         $conn->beginTransaction();
 
         //Get all orders
-        $stmt = $conn->prepare("
-            SELECT order.id as order_id, order.user_id, order.order_number, order.status as order_status, order.created_at as created_at, order.total  
-            FROM `order`
-            ORDER BY order.created_at DESC
-        ");
+        $stmt = $conn->prepare("SELECT order.id as order_id, order.user_id, order.order_number, order.status as order_status, order.created_at as created_at, order.total FROM `order` ORDER BY order.created_at DESC");
         $stmt->execute();
         $orders = [];
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -77,11 +73,7 @@ readonly class OrderRepository implements IOrderRepository
             $productsPerOrder[$row['order_id']] = (int)$row['products_count'];
         };
         //Get user per order
-        $stmt = $conn->prepare("
-            SELECT user.id as user_id, user.name, user.surname, `order`.id as order_id
-            FROM `order`
-            INNER JOIN `user` ON `order`.user_id = user.id
-        ");
+        $stmt = $conn->prepare("SELECT user.id as user_id, user.name, user.surname, `order`.id as order_id FROM `order` INNER JOIN `user` ON `order`.user_id = user.id");
         $stmt->execute();
         $userPerOrder = [];
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -145,11 +137,7 @@ readonly class OrderRepository implements IOrderRepository
             $productsPerOrder[$row['order_id']] = (int)$row['products_count'];
         };
         //Get user per order
-        $stmt = $conn->prepare("
-            SELECT user.*, `order`.id as order_id
-            FROM `order`
-            INNER JOIN `user` ON `order`.user_id = user.id
-        ");
+        $stmt = $conn->prepare("SELECT user.*, `order`.id as order_id FROM `order` INNER JOIN `user` ON `order`.user_id = user.id");
         $stmt->execute();
         $userPerOrder = [];
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -178,14 +166,7 @@ readonly class OrderRepository implements IOrderRepository
     }
     public function GetAllByUser(string $user_id): array
     {
-        $stmt = $this->_context->getConnection()->prepare("
-            SELECT product.id as product_id, product.name, product.category_id, product.price, product.image_url, product.rating, product.stock, product.badge, product.discount, product.description, product.is_active, `order`.id as 'order_id', `order`.order_number, `order`.status as order_status,`order`.created_at as created_at, `order`.total  , category.id as category_id, category.name as category_name, category.description as category_description, order_products.quantity as order_quantity
-            FROM `order`
-            INNER JOIN `order_products` ON `order`.`id` = `order_products`.`order_id`
-            INNER JOIN `product` ON `order_products`.`product_id` = `product`.`id`
-            INNER JOIN `category` ON `product`.`category_id` = `category`.`id`
-            WHERE `user_id` = :user_id
-        ");
+        $stmt = $this->_context->getConnection()->prepare("SELECT product.id as product_id, product.name, product.category_id, product.price, product.image_url, product.rating, product.stock, product.badge, product.discount, product.description, product.is_active, `order`.id as 'order_id', `order`.order_number, `order`.status as order_status, `order`.created_at as created_at, `order`.total, category.id as category_id, category.name as category_name, category.description as category_description, order_products.quantity as order_quantity FROM `order` INNER JOIN `order_products` ON `order`.`id` = `order_products`.`order_id` INNER JOIN `product` ON `order_products`.`product_id` = `product`.`id` INNER JOIN `category` ON `product`.`category_id` = `category`.`id` WHERE `user_id` = :user_id");
         $stmt->bindParam(':user_id', $user_id);
         $stmt->execute();
         $orders = [];
@@ -240,10 +221,7 @@ readonly class OrderRepository implements IOrderRepository
         $orderCreatedAt = $order->CreatedAt->format('Y-m-d H:i:s');
         $conn = $this->_context->getConnection();
         $conn->beginTransaction();
-        $stmt = $conn->prepare("
-            INSERT INTO `order` (id, user_id, total, status, created_at) 
-            VALUES (:order_id, :user_id, :total, :status, :created_at)
-            ");
+        $stmt = $conn->prepare("INSERT INTO `order` (id, user_id, total, status, created_at) VALUES (:order_id, :user_id, :total, :status, :created_at)");
         $stmt->bindParam(':order_id', $order->Id->Id);
         $stmt->bindParam(':user_id', $order->UserId);
         $stmt->bindParam(':total', $order->Total, PDO::PARAM_INT);
@@ -252,10 +230,7 @@ readonly class OrderRepository implements IOrderRepository
         $stmt->execute();
 
         foreach ($order->Products as $cart_product) {
-            $stmt = $conn->prepare("
-            INSERT INTO `order_products`(order_id, product_id, quantity, price_at_purchase) 
-            VALUES (:order_id, :product_id, :quantity, :price_at_purchase)
-            ");
+            $stmt = $conn->prepare("INSERT INTO `order_products`(order_id, product_id, quantity, price_at_purchase) VALUES (:order_id, :product_id, :quantity, :price_at_purchase)");
             $stmt->bindParam(':order_id', $order->Id->Id);
             $stmt->bindParam(':product_id', $cart_product->Product->Id->Id);
             $stmt->bindParam(':quantity', $cart_product->Quantity);
@@ -268,11 +243,7 @@ readonly class OrderRepository implements IOrderRepository
     }
     public function UpdateStatusOrder(string $order_id, string $status): bool
     {
-        $stmt = $this->_context->getConnection()->prepare("
-            UPDATE `order` 
-            SET status = :status
-            WHERE id = :order_id
-        ");
+        $stmt = $this->_context->getConnection()->prepare("UPDATE `order` SET status = :status WHERE id = :order_id");
         $stmt->bindParam(':status', $status);
         $stmt->bindParam(':order_id', $order_id);
         $result = $stmt->execute();

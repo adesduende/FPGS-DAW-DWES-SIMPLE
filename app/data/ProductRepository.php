@@ -16,11 +16,7 @@
 
         function GetAll(): ?array
         {
-            $stmt = $this->_context->getConnection()->prepare("
-                SELECT product.* , category.name as category_name, category.description as category_description 
-                FROM product 
-                INNER JOIN category ON product.category_id = category.id
-            ");
+            $stmt = $this->_context->getConnection()->prepare("SELECT product.*, category.name as category_name, category.description as category_description FROM product INNER JOIN category ON product.category_id = category.id");
             $stmt->execute();
             $products = [];
             while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
@@ -74,12 +70,7 @@
         }
         function GetAllPaginated(int $unitsPerPage=20, int $page=1): ?array
         {
-            $stmt = $this->_context->getConnection()->prepare("
-                SELECT product.* , category.name as category_name, category.description as category_description 
-                FROM product 
-                INNER JOIN category ON product.category_id = category.id 
-                LIMIT :offset, :unitsPerPage
-            ");
+            $stmt = $this->_context->getConnection()->prepare("SELECT product.*, category.name as category_name, category.description as category_description FROM product INNER JOIN category ON product.category_id = category.id LIMIT :offset, :unitsPerPage");
 
             $offset = ($page - 1) * $unitsPerPage;
             $stmt->bindParam('offset', $offset, \PDO::PARAM_INT);
@@ -117,11 +108,7 @@
         }
         function GetById(string $id): ?Product
         {
-            $stmt = $this->_context->getConnection()->prepare("
-                SELECT product.*, product.id as product_id, category.id as category_id, category.name as category_name, category.description as category_description 
-                FROM product 
-                INNER JOIN category ON category.id = product.category_id WHERE product.id = :id
-            ");
+            $stmt = $this->_context->getConnection()->prepare("SELECT product.*, product.id as product_id, category.id as category_id, category.name as category_name, category.description as category_description FROM product INNER JOIN category ON category.id = product.category_id WHERE product.id = :id");
             $stmt->bindParam(':id', $id, \PDO::PARAM_STR);
             $stmt->execute();
             $row = $stmt->fetch(\PDO::FETCH_ASSOC);
@@ -155,17 +142,7 @@
             elseif($sortBy === 'name') $sortQuery = 'ORDER BY product.name ASC ';
             elseif($sortBy === 'rating') $sortQuery = 'ORDER BY product.rating ASC ';
 
-            $stmt = $this->_context->getConnection()->prepare(
-                " SELECT product.* , category.name as category_name, category.description as category_description 
-                        FROM product 
-                        INNER JOIN category ON product.category_id = category.id                        
-                        WHERE category.name LIKE :category AND product.name LIKE :name
-                        ".
-                        $outstanding.
-                        $sortQuery.
-                        $onlyActive
-                        ."
-                        LIMIT :offset, :unitsPerPage");
+            $stmt = $this->_context->getConnection()->prepare("SELECT product.*, category.name as category_name, category.description as category_description FROM product INNER JOIN category ON product.category_id = category.id WHERE category.name LIKE :category AND product.name LIKE :name " . $onlyActive . $outstanding . $sortQuery . "LIMIT :offset, :unitsPerPage");
 
             $offset = ($page - 1) * $unitsPerPage;
             $stmt->bindParam('offset', $offset, \PDO::PARAM_INT);

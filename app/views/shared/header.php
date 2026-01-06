@@ -15,7 +15,8 @@
         </div>
     </div>
     <?php
-        if($_SERVER['PATH_INFO']!=='/admin/panel'):
+        $requestPath = $_SERVER['PATH_INFO'] ?? parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH);
+        if($requestPath !== '/admin/panel'):
     ?>
             <nav class="main-nav">
                 <div class="logo">

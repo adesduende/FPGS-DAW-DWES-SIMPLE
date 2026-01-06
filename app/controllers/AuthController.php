@@ -39,7 +39,7 @@ class AuthController extends ControllerBase
     {
         session_start();
 
-        $view = "/app/views/Auth/login.php";
+        $view = '/app/views/Auth/Login.php';
         // Check if already logged in
         if (Auth::isLogin()) {
             header('Location: /');
@@ -60,7 +60,7 @@ class AuthController extends ControllerBase
             header('Location: /');
             exit();
         }
-        $view = '/app/views/auth/signup.php';
+        $view = '/app/views/Auth/Signup.php';
         include LAYOUT;
     }
 
@@ -74,17 +74,22 @@ class AuthController extends ControllerBase
     {
         $error = '';
 
-        // Handle form submission
-
         $username = $request['username'] ?? '';
         $password = $request['password'] ?? '';
 
-        // Basic validation
         if (empty($username) || empty($password)) {
             $error = 'Please fill in all fields';
         } else {
             $user = $this->_userRepository->GetByEmail($username);
-            if (Hash::IsEqual($password, $user->HashedPassword)&&$user->IsActive) {
+            
+            if (!$user) {
+                $this->data['error'] = 'Usuario o contraseña invalidos';
+                $view = '/app/views/Auth/Login.php';
+                include LAYOUT;
+                return;
+            }
+            
+            if (Hash::IsEqual($password, $user->HashedPassword) && $user->IsActive) {
                 session_start();
                 $_SESSION['user_id'] = $user->Id->Id;
                 $_SESSION['username'] = $user->Name;
@@ -93,11 +98,11 @@ class AuthController extends ControllerBase
                 exit();
             } elseif(!$user->IsActive) {
                 $this->data['error'] = 'El usuario no ha sido activado';
-                $view = "/app/views/Auth/login.php";
+                $view = '/app/views/Auth/Login.php';
                 include LAYOUT;
             }else{
                 $this->data['error'] = 'Usuario o contraseña invalidos';
-                $view = "/app/views/Auth/login.php";
+                $view = '/app/views/Auth/Login.php';
                 include LAYOUT;
             }
         }
@@ -111,7 +116,7 @@ class AuthController extends ControllerBase
      */
     public function SignUp(array $request): void
     {
-        $view = '/app/views/auth/signup.php';
+        $view = '/app/views/Auth/Signup.php';
 
         // Handle form submission
         $name = $request['name'] ?? '';

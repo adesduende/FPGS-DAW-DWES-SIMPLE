@@ -1,11 +1,9 @@
 <div class="products-page">
-    <!-- Page Header -->
     <div class="products-header">
         <h1>Nuestros Productos</h1>
         <p class="products-subtitle">Encuentra el equipamiento deportivo perfecto para ti</p>
     </div>
 
-    <!-- Filters and Search Section -->
     <div class="filters-section">
         <div class="search-bar">
             <input type="text" id="searchInput" placeholder="Buscar productos..."
@@ -18,8 +16,8 @@
                 <label>Categoría:</label>
                 <select id="categoryFilter" class="filter-select">
                     <?php foreach ($this->data['categories'] as $cat): ?>
-                        <option value="<?php echo $cat; ?>" <?php echo $this->data['selectedCategory'] === $cat ? 'selected' : ''; ?>>
-                            <?php echo $cat; ?>
+                        <option value="<?php echo htmlspecialchars($cat); ?>" <?php echo $this->data['selectedCategory'] === $cat ? 'selected' : ''; ?>>
+                            <?php echo htmlspecialchars($cat); ?>
                         </option>
                     <?php endforeach; ?>
                 </select>
@@ -53,7 +51,6 @@
         </div>
     </div>
 
-    <!-- Products Grid -->
     <div class="products-container">
         <?php if (empty($this->data['products'])): ?>
             <div class="no-products">
@@ -66,15 +63,34 @@
                 <?php foreach ($this->data['products'] as $product): ?>
                     <div class="product-card-full">
                         <?php if (!empty($product->Badge) || $product->Discount >= 1): ?>
-                            <div class="product-badge-full
-                                <?php
-                                echo $product->Badge === "Best Seller" ? 'badge-popular' : '';
-                                echo $product->Badge === "New" ? 'badge-new' : '';
-                                echo $product->Badge === "Premium" ? 'badge-premium' : '';
-                                echo $product->Discount >= 1 ? 'badge-sale' : '';
-                                ?>
-                            ">
-                                <?php echo $product->Badge !== '' ? $product->Badge : $product->Discount . '%' ?>
+                            <?php
+                            if ($product->Discount >= 1) {
+                                $badgeClass = 'badge-sale';
+                                $badgeText = $product->Discount . '%';
+                            } else {
+                                switch($product->Badge) {
+                                    case 'Best Seller':
+                                    case 'Popular':
+                                        $badgeClass = 'badge-popular';
+                                        $badgeText = $product->Badge;
+                                        break;
+                                    case 'New':
+                                        $badgeClass = 'badge-new';
+                                        $badgeText = $product->Badge;
+                                        break;
+                                    case 'Premium':
+                                        $badgeClass = 'badge-premium';
+                                        $badgeText = $product->Badge;
+                                        break;
+                                    default:
+                                        $badgeClass = '';
+                                        $badgeText = $product->Badge;
+                                        break;
+                                }
+                            }
+                            ?>
+                            <div class="product-badge-full <?php echo htmlspecialchars($badgeClass); ?>">
+                                <?php echo htmlspecialchars($badgeText); ?>
                             </div>
                         <?php endif; ?>
 
@@ -84,7 +100,7 @@
                         </div>
 
                         <div class="product-info-full">
-                            <span class="product-category"><?php echo $product->Category->Name; ?></span>
+                            <span class="product-category"><?php echo htmlspecialchars($product->Category->Name); ?></span>
                             <h3 class="product-name"><?php echo htmlspecialchars($product->Name); ?></h3>
 
                             <div class="product-rating">
@@ -103,7 +119,7 @@
                                     echo '<span class="star empty">★</span>';
                                 }
                                 ?>
-                                <span class="rating-value">(<?php echo $product->Rating; ?>)</span>
+                                <span class="rating-value">(<?php echo htmlspecialchars($product->Rating); ?>)</span>
                             </div>
 
                             <div class="product-stock">
@@ -119,11 +135,11 @@
                             <div class="product-footer-full">
                                 <div class="product-price-full">
                                     <?php
-                                    echo $product->Discount >= 1 ? '<del>' . round($product->Price, 2) . '€</del>' : '';
-                                    echo round($product->Price - (($product->Discount * $product->Price) / 100), 2) . '€';
+                                    echo $product->Discount >= 1 ? '<del>' . htmlspecialchars(round($product->Price, 2)) . '€</del>' : '';
+                                    echo htmlspecialchars(round($product->Price - (($product->Discount * $product->Price) / 100), 2)) . '€';
                                     ?>
                                 </div>
-                                <button class="btn-add-cart" onclick="AddToCart('<?php echo $product->Id->Id ?>')">
+                                <button class="btn-add-cart" onclick="AddToCart('<?php echo htmlspecialchars($product->Id->Id) ?>')">
                                     <img src="/images/cart-add.svg" alt="Añadir">
                                 </button>
                             </div>
@@ -161,8 +177,8 @@
             </button>
             <?php for ($i = 1; $i <= $this->data['totalPages']; $i++): ?>
                 <a class="page-btn page-num <?php echo ($i === $this->data['currentPage']) ? 'active' : '' ?>"
-                    href="/products?page=<?php echo $i ?><?php echo $query; ?>">
-                    <?php echo $i; ?>
+                    href="/products?page=<?php echo htmlspecialchars($i) ?><?php echo $query; ?>">
+                    <?php echo htmlspecialchars($i); ?>
                 </a>
             <?php endfor; ?>
             <button class="page-btn page-next" <?php if ($this->data['totalPages'] == $this->data['currentPage']): ?>disabled<?php endif; ?>

@@ -13,23 +13,23 @@
         <div class="stats">
             <div class="stat-card">
                 <h3>Total Productos</h3>
-                <p class="stat-number"><?php echo $this->data['totalProducts'] ?? '0'; ?></p>
+                <p class="stat-number"><?php echo htmlspecialchars($this->data['totalProducts'] ?? '0'); ?></p>
             </div>
             <div class="stat-card">
                 <h3>En Stock</h3>
-                <p class="stat-number"><?php echo $this->data['inStock'] ?? '0'; ?></p>
+                <p class="stat-number"><?php echo htmlspecialchars($this->data['inStock'] ?? '0'); ?></p>
             </div>
             <div class="stat-card">
                 <h3>Sin Stock</h3>
-                <p class="stat-number"><?php echo $this->data['outOfStock'] ?? '0'; ?></p>
+                <p class="stat-number"><?php echo htmlspecialchars($this->data['outOfStock'] ?? '0'); ?></p>
             </div>
             <div class="stat-card">
                 <h3>Categorías</h3>
-                <p class="stat-number"><?php echo $this->data['categoriesCount'] ?? '0'; ?></p>
+                <p class="stat-number"><?php echo htmlspecialchars($this->data['categoriesCount'] ?? '0'); ?></p>
             </div>
             <div class="stat-card">
                 <h3>Desactivados</h3>
-                <p class="stat-number"><?php echo $this->data['deactivated'] ?? '0'; ?></p>
+                <p class="stat-number"><?php echo htmlspecialchars($this->data['deactivated'] ?? '0'); ?></p>
             </div>
         </div>
 
@@ -81,13 +81,13 @@
                                 <td>
                                     <div class="actions">
                                         <button class="action-btn action-btn-edit" 
-                                            onclick="openEditModal('<?= $product->Id->Id ?>', '<?= htmlspecialchars($product->Name) ?>', '<?= htmlspecialchars($product->Description ?? '') ?>', '<?= $product->Category->Id->Id ?>', '<?= $product->Price ?>', '<?= $product->Stock ?>', '<?= $product->Discount ?>', '<?= htmlspecialchars($product->ImageUrl ?? '') ?>')">✏️</button>
+                                            onclick="openEditModal('<?= htmlspecialchars($product->Id->Id) ?>', '<?= htmlspecialchars($product->Name) ?>', '<?= htmlspecialchars($product->Description ?? '') ?>', '<?= htmlspecialchars($product->Category->Id->Id) ?>', '<?= htmlspecialchars($product->Price) ?>', '<?= htmlspecialchars($product->Stock) ?>', '<?= htmlspecialchars($product->Discount) ?>', '<?= htmlspecialchars($product->ImageUrl ?? '') ?>')">✏️</button>
                                         <?php if ($product->IsActive): ?>
                                             <button class="action-btn action-btn-deactivate" 
-                                                onclick="DeactivateProduct('<?= $product->Id->Id ?>')">🚫</button>
+                                                onclick="DeactivateProduct('<?= htmlspecialchars($product->Id->Id) ?>')">🚫</button>
                                         <?php else: ?>
                                             <button class="action-btn action-btn-activate" 
-                                                onclick="ActivateProduct('<?= $product->Id->Id ?>')">♻️</button>
+                                                onclick="ActivateProduct('<?= htmlspecialchars($product->Id->Id) ?>')">♻️</button>
                                         <?php endif; ?>
                                     </div>
                                 </td>
@@ -104,8 +104,8 @@
                 </button>
                 <?php for ($i = 1; $i <= $this->data['totalPages']; $i++): ?>
                     <button class="page-btn <?php echo $i === $this->data['currentPage'] ? 'active' : '' ?>"
-                        onclick="NavigateToPage(<?php echo $i; ?>)">
-                        <?= $i ?>
+                        onclick="NavigateToPage(<?php echo htmlspecialchars($i); ?>)">
+                        <?= htmlspecialchars($i) ?>
                     </button>
                 <?php endfor; ?>
                 <button class="page-btn" <?php echo $this->data['currentPage'] >= $this->data['totalPages'] ? 'disabled' : ''; ?>
@@ -135,7 +135,7 @@
                         <select id="addProductCategory" name="categoryId" class="form-select" required>
                             <option value="">Selecciona una categoría</option>
                             <?php foreach ($this->data['categories'] as $category): ?>
-                                <option value="<?= $category->Id->Id ?>"><?= htmlspecialchars($category->Name) ?></option>
+                                <option value="<?= htmlspecialchars($category->Id->Id) ?>"><?= htmlspecialchars($category->Name) ?></option>
                             <?php endforeach; ?>
                         </select>
                     </div>
@@ -197,7 +197,7 @@
                         <label for="editProductCategory" class="form-label">Categoría:</label>
                         <select id="editProductCategory" name="categoryId" class="form-select" required>
                             <?php foreach ($this->data['categories'] as $category): ?>
-                                <option value="<?= $category->Id->Id ?>"><?= htmlspecialchars($category->Name) ?></option>
+                                <option value="<?= htmlspecialchars($category->Id->Id) ?>"><?= htmlspecialchars($category->Name) ?></option>
                             <?php endforeach; ?>
                         </select>
                     </div>

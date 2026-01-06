@@ -27,12 +27,12 @@
                             <label>Cantidad:</label>
                             <div class="quantity-control">
                                 <button class="qty-btn qty-minus"
-                                        onclick="decrease(this,'<?php echo $item->Product->Id->Id ?>')">−
+                                        onclick="decrease(this,'<?php echo htmlspecialchars($item->Product->Id->Id) ?>')">−
                                 </button>
-                                <input name="quantity" type="number" value="<?php echo $item->Quantity; ?>" readonly
+                                <input name="quantity" type="number" value="<?php echo htmlspecialchars($item->Quantity); ?>" readonly
                                        min="1" max="99" class="qty-input">
                                 <button class="qty-btn qty-plus"
-                                        onclick="add(this,'<?php echo $item->Product->Id->Id ?>')">+
+                                        onclick="add(this,'<?php echo htmlspecialchars($item->Product->Id->Id) ?>')">+
                                 </button>
                             </div>
                         </div>

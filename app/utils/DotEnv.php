@@ -2,6 +2,8 @@
 
 namespace sportshop\app\utils;
 
+use sportshop\app\services\Logger;
+
 /**
  * Class DotEnv
  * Load environment variables from a .env file.
@@ -9,6 +11,7 @@ namespace sportshop\app\utils;
 class DotEnv
 {
     protected string $path;
+    private Logger $_logger;
 
     /**
      * DotEnv constructor.
@@ -16,39 +19,47 @@ class DotEnv
      */
     public function __construct(string $path)
     {
+        $this->_logger = Logger::GetInstance();
+        
         if (!file_exists($path)) {
             throw new \InvalidArgumentException("The .env file does not exist: {$path}");
         }
-        $this->path = $path . "\.env";
+        $this->path = $path . DIRECTORY_SEPARATOR . ".env";
     }
     /**
      * Load the environment variables from the .env file.
      */
     public function load(): void
     {
-        $lines = file($this->path, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-        
-        foreach ($lines as $line) {
-            // saltamos los comentarios
-            if (str_starts_with(trim($line), '#')) {
-                continue;
-            }
+        try
+        {
+            $lines = file($this->path, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+                    
+            foreach ($lines as $line) {
+                // saltamos los comentarios
+                if (str_starts_with(trim($line), '#')) {
+                    continue;
+                }
 
-            if (strpos($line, '=') !== false) {
-                list($name, $value) = explode('=', $line, 2);
-                $name = trim($name);
-                $value = trim($value);
+                if (strpos($line, '=') !== false) {
+                    list($name, $value) = explode('=', $line, 2);
+                    $name = trim($name);
+                    $value = trim($value);
 
-                $value = $this->removeQuotes($value);
+                    $value = $this->removeQuotes($value);
 
 
-                if (!array_key_exists($name, $_ENV)) {
-                    putenv("{$name}={$value}");
-                    $_ENV[$name] = $value;
-                    $_SERVER[$name] = $value;
+                    if (!array_key_exists($name, $_ENV)) {
+                        putenv("{$name}={$value}");
+                        $_ENV[$name] = $value;
+                        $_SERVER[$name] = $value;
+                    }
                 }
             }
+        } catch (\Exception $e) {
+            $this->_logger->Error("Not .env file in such directory to load");
         }
+        
     }
     /**
      * Remove quotes from a string value.

@@ -2,7 +2,7 @@
     <div class="profile-header">
         <div class="profile-avatar">
             <div class="avatar-circle">
-                <?php echo strtoupper(substr($this->data['name'], 0, 2)); ?>
+                <?php echo htmlspecialchars(strtoupper(substr($this->data['name'], 0, 2))); ?>
             </div>
         </div>
         <div class="profile-info">
@@ -43,15 +43,15 @@
                 <?php foreach ($this->data['orders'] as $order): ?>
                     <div class="order-card">
                         <div class="order-header">
-                            <span class="order-number">#ORD-<?php echo $order->OrderNumber ?></span>
-                            <span class="order-status status-delivered"><?php echo $order->Status ?></span>
+                            <span class="order-number">#ORD-<?php echo htmlspecialchars($order->OrderNumber) ?></span>
+                            <span class="order-status status-<?php echo htmlspecialchars(strtolower($order->Status)) ?>"><?php echo htmlspecialchars(ucfirst($order->Status)) ?></span>
                         </div>
                         <div class="order-body">
-                            <p><strong>Fecha:</strong> <?php echo $order->CreatedAt->format('l, F j, Y H:i:s') ?></p>
-                            <p><strong>Total:</strong> <?php echo $order->Total ?>€</p>
+                            <p><strong>Fecha:</strong> <?php echo htmlspecialchars($order->CreatedAt->format('l, F j, Y H:i:s')) ?></p>
+                            <p><strong>Total:</strong> <?php echo htmlspecialchars($order->Total) ?>€</p>
                             <p><strong>Productos:</strong>
                                 <?php foreach ($order->Products as $product): ?>
-                                <?php echo $product->Name ?>
+                                <?php echo htmlspecialchars($product->Name) ?>
                                 <?php endforeach; ?>
                             </p>
                         </div>

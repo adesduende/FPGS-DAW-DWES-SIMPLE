@@ -76,10 +76,10 @@
                             <td><?php echo htmlspecialchars($order->CreatedAt->format('d/m/Y H:i')); ?></td>
                             <td><?php echo htmlspecialchars(number_format($order->Total, 2)); ?> €</td>
                             <td><span class="order-status status-<?php echo strtolower($order->Status); ?>"><?php echo htmlspecialchars(ucfirst($order->Status)); ?></span></td>
-                            <td><?php echo $this->data['productsperorder'][$order->Id->Id] ?? 0; ?></td> 
+                            <td><?php echo htmlspecialchars($this->data['productsperorder'][$order->Id->Id] ?? 0); ?></td> 
                             <td class="actions">
                                 <button class="action-btn-view">📋</button>
-                                <button class="action-btn-edit" onclick="openStatusModal('<?= $order->Id->Id ?>', '<?= htmlspecialchars($order->OrderNumber) ?>', '<?= strtolower($order->Status) ?>')">✏️</button>
+                                <button class="action-btn-edit" onclick="openStatusModal('<?= htmlspecialchars($order->Id->Id) ?>', '<?= htmlspecialchars($order->OrderNumber) ?>', '<?= htmlspecialchars(strtolower($order->Status)) ?>')">✏️</button>
                             </td>
                         </tr>
                         <?php endforeach; ?>
@@ -93,8 +93,8 @@
                         <?php echo $this->data['currentPage'] - 1 > 0 ? $this->data['currentPage'] - 1 : 1; ?>)">«</button>
                 <?php for ($i = 1; $i <= $this->data['totalPages']; $i++): ?>
                     <button class="page-btn <?php echo $i === $this->data['currentPage'] ? 'active' : '' ?>"
-                        onclick="NavigateToPage(<?php echo $i; ?>)">
-                        <?= $i ?>
+                        onclick="NavigateToPage(<?php echo htmlspecialchars($i); ?>)">
+                        <?= htmlspecialchars($i) ?>
                     </button>
                 <?php endfor; ?>
                 <button class="page-btn" 

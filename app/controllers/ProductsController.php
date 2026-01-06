@@ -54,7 +54,7 @@ class ProductsController extends ControllerBase
         $this->data['unitsPerPage'] = $retrieveData['unitsPerPage'];
         $this->data['total'] = $retrieveData['total'];
 
-        $view = '\app\views\Products\products.php';
+        $view = '/app/views/Products/Products.php';
         include LAYOUT;
     }
 }

@@ -10,11 +10,11 @@
 
 <body>
 
-    <?php include BASE_PATH . "/app/views/shared/header.php" ?>
+    <?php include BASE_PATH . "/app/views/shared/Header.php" ?>
     <?php
         include BASE_PATH . $view;
     ?>
-    <?php include BASE_PATH . "/app/views/shared/footer.php" ?>
+    <?php include BASE_PATH . "/app/views/shared/Footer.php" ?>
 
 </body>
 
