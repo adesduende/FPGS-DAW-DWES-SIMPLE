@@ -1,0 +1,21 @@
+# Environment files
+.env
+.env.*
+
+# Docker files
+*.Dockerfile
+Dockerfile
+docker-compose.yml
+docker-compose.yaml
+
+# Database files
+db_init.sql
+db_seed.sql
+
+# Git
+.git
+.gitignore
+
+# IDE
+.vscode
+.idea
