@@ -1,0 +1,31 @@
+/* Main CSS - Imports all modular stylesheets */
+
+/* Base styles and reset */
+@import url('base.css');
+
+/* Header and navigation */
+@import url('header.css');
+
+/* Footer */
+@import url('footer.css');
+
+/* Home page styles */
+@import url('home.css');
+
+/* Products page styles */
+@import url('products.css');
+
+/* Login page styles */
+@import url('login.css');
+
+/* Signup page styles */
+@import url('signup.css');
+
+/* Profile page styles */
+@import url('profile.css');
+
+/* Cart page styles */
+@import url('cart.css');
+
+/* Admin panel styles */
+@import url('admin.css');
