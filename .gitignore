@@ -3,3 +3,6 @@
 .idea
 *.log
 *.env
+*.excalidraw
+*.doc
+*.docx
