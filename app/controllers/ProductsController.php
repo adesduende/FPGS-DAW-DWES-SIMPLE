@@ -3,7 +3,6 @@ namespace sportshop\app\controllers;
 
 use sportshop\app\data\CategoryRepository;
 use sportshop\app\data\ProductRepository;
-use sportshop\app\data\UserRepository;
 
 class ProductsController extends ControllerBase
 {
@@ -15,11 +14,15 @@ class ProductsController extends ControllerBase
         $this->_productRepository=$productRepository;
         $this->_categoryRepository=$categoryRepository;
     }
-
+    //[GET]
     public function Index(array $request) : void {
 
-        //TODO: control data from request: example page bigger than expected or less!!
-        $retrieveData = $this->_productRepository->GetByQueryPaginated($request['items']??20,$request['page']??1, $request);
+        $request['onlyActive'] = true;
+        $retrieveData = $this->_productRepository->GetByQueryPaginated(
+            $request['items']??20,
+            $request['page']??1, 
+            $request
+        );
 
         $products = $retrieveData['products'];
         $categories = array_map(function ($cat){ return $cat->Name;},$this->_categoryRepository->GetAll());
