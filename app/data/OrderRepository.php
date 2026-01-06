@@ -192,7 +192,7 @@ readonly class OrderRepository implements IOrderRepository
             );
 
             if (isset($orders[$row['order_id']])) {
-                $orders[$row['order_id']]->Product[] = $product;
+                $orders[$row['order_id']]->Products[] = $product;
             } else {
                 $createdAt = new DateTime($row["created_at"]);
                 $orders[$row['order_id']] = new Order(
