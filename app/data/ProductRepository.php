@@ -117,11 +117,11 @@
         function GetById(string $id): ?Product
         {
             $stmt = $this->_context->getConnection()->prepare("
-                SELECT product.*, category.id as category_id, category.name as category_name, category.description as category_description 
+                SELECT product.*, product.id as product_id, category.id as category_id, category.name as category_name, category.description as category_description 
                 FROM product 
                 INNER JOIN category ON category.id = product.category_id WHERE product.id = :id
             ");
-            $stmt->bindParam(':id', $id, \PDO::PARAM_INT);
+            $stmt->bindParam(':id', $id, \PDO::PARAM_STR);
             $stmt->execute();
             $row = $stmt->fetch(\PDO::FETCH_ASSOC);
             $product = new Product(
@@ -145,6 +145,7 @@
             $outstanding = ($query['outstanding']===true)?'AND product.badge IS NOT NULL AND product.badge <> "" OR product.discount >= 1 ':'';
             $category_name=($query['category']==='Todos')?'%':$query['category']??'%';
             $product_name=($query['search']==='')?'%':'%'.$query['search'].'%'??'%';
+            $onlyActive = ($query['onlyActive']===true)?'AND product.is_active = 1 ':'';
             //Sort
             $sortBy=($query['sort']==='')?'default':$query['sort']??'default';
             $sortQuery='';
@@ -160,7 +161,8 @@
                         WHERE category.name LIKE :category AND product.name LIKE :name
                         ".
                         $outstanding.
-                        $sortQuery
+                        $sortQuery.
+                        $onlyActive
                         ."
                         LIMIT :offset, :unitsPerPage");
 
